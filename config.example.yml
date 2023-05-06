@@ -1,0 +1,6 @@
+server_port: 8080
+log_level: debug
+api_url: https://ai.fakeopen.com/api
+model: text-davinci-002-render-sha
+# chatgpt access_token 
+access_token: xxx
