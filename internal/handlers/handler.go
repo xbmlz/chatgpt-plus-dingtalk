@@ -11,6 +11,7 @@ import (
 	"github.com/xbmlz/chatgpt-dingtalk/pkg/chatgpt"
 	"github.com/xbmlz/chatgpt-dingtalk/pkg/dingbot"
 	"github.com/xbmlz/chatgpt-dingtalk/pkg/logger"
+	"github.com/xbmlz/chatgpt-dingtalk/pkg/replicate"
 )
 
 func RootHandler(ctx *gin.Context) {
@@ -19,10 +20,33 @@ func RootHandler(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-	ding := dingbot.NewDingBot(msg)
+	ding := dingbot.New(msg)
 	// TODO
-	if strings.HasPrefix(msg.Text.Content, "帮助") {
+	input := msg.Text.Content
+	if strings.HasPrefix(input, "帮助") {
 		SendHelp(ding)
+		return
+	}
+	if strings.HasPrefix(input, "#图片") {
+		input = strings.ReplaceAll(input, "#图片", "")
+		image := replicate.New(replicate.Replicate{
+			BaseUrl:  "https://api.replicate.com",
+			ApiToken: "r8_EFqWf2Io13JHek548wcRb3I8Z34KDM51ykCia",
+		})
+
+		url, err := image.Generate(replicate.ImageGenerateRequest{
+			Version: "db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf",
+			Input: replicate.ImageGenerateRequestInput{
+				Prompt: input,
+			},
+		})
+		if err != nil {
+			logger.Error(err)
+			errMsg := fmt.Sprintf("请求聊天机器人失败: %s", err.Error())
+			ding.SendMessage(dingbot.MSG_TEXT, errMsg)
+		}
+		imgMd := fmt.Sprintf("![image](%s)", url)
+		ding.SendMessage(dingbot.MSG_MD, imgMd)
 		return
 	}
 

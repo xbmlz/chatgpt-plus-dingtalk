@@ -15,10 +15,6 @@ import (
 	"github.com/xbmlz/chatgpt-dingtalk/pkg/logger"
 )
 
-// dingtalk bot
-
-// chatgpt
-
 func main() {
 	config.Initialize()
 	logger.Initialize(config.Instance.LogLevel)

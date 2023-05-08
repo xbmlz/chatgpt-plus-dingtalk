@@ -67,7 +67,7 @@ type DingBotResponse struct {
 	ErrMsg  string `json:"errmsg"`  // 错误信息 "ok"
 }
 
-func NewDingBot(msg DingBotReceiveMessage) *DingBot {
+func New(msg DingBotReceiveMessage) *DingBot {
 	return &DingBot{
 		Msg: msg,
 	}
