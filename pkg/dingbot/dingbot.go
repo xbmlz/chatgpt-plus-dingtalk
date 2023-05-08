@@ -10,11 +10,11 @@ import (
 
 type MsgType string
 
-const TEXT MsgType = "text"
-const MARKDOWN MsgType = "markdown"
+const MSG_TEXT MsgType = "text"
+const MSG_MD MsgType = "markdown"
 
 type DingBot struct {
-	SessionWebhook string // 当前会话的Webhook地址
+	Msg DingBotReceiveMessage
 }
 
 type DingBotText struct {
@@ -67,37 +67,39 @@ type DingBotResponse struct {
 	ErrMsg  string `json:"errmsg"`  // 错误信息 "ok"
 }
 
-func NewDingBot(dingbot DingBot) *DingBot {
+func NewDingBot(msg DingBotReceiveMessage) *DingBot {
 	return &DingBot{
-		SessionWebhook: dingbot.SessionWebhook,
+		Msg: msg,
 	}
 }
 
-func (d *DingBot) SendMarkdownMessage(ctype, mtype, msg, atID, atNick string) (err error) {
-	if atID == "" {
-		msg = fmt.Sprintf("%s\n\n@%s", msg, atNick)
+func (d *DingBot) SendMessage(mtype MsgType, msg string) (err error) {
+	if d.Msg.SenderStaffID == "" {
+		msg = fmt.Sprintf("%s\n\n@%s", msg, d.Msg.SenderNick)
 	}
 	var send DingBotSendMessage
 	switch mtype {
-	case "text":
+	case MSG_TEXT:
 		send = DingBotSendMessage{
-			MsgType: "markdown",
+			MsgType: string(MSG_TEXT),
+			Text: DingBotText{
+				Content: msg,
+			},
+		}
+	case MSG_MD:
+		send = DingBotSendMessage{
+			MsgType: string(MSG_MD),
 			Markdown: DingBotMarkdown{
 				Text:  msg,
 				Title: msg,
 			},
 		}
-	case "markdown":
-		send = DingBotSendMessage{
-			MsgType: "markdown",
-			Text: DingBotText{
-				Content: msg,
-			},
-		}
+	default:
+		return errors.New("不支持的消息类型")
 	}
-	if ctype == "2" {
+	if d.Msg.ConversationType == "2" {
 		send.At = DingBotSendAt{
-			AtUserIds: []string{atID},
+			AtUserIds: []string{d.Msg.SenderID},
 		}
 	}
 	data, err := json.Marshal(send)
@@ -105,7 +107,7 @@ func (d *DingBot) SendMarkdownMessage(ctype, mtype, msg, atID, atNick string) (e
 		return err
 	}
 
-	req, err := http.NewRequest("POST", d.SessionWebhook, bytes.NewBuffer(data))
+	req, err := http.NewRequest("POST", d.Msg.SessionWebhook, bytes.NewBuffer(data))
 
 	if err != nil {
 		return err

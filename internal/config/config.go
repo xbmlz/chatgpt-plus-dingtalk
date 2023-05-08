@@ -1,54 +1,38 @@
 package config
 
 import (
-	"io/ioutil"
-	"log"
-	"os"
+	"fmt"
 
-	"gopkg.in/yaml.v3"
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
 )
 
 type Config struct {
-	ServerPort  string `yaml:"server_port"`
-	LogLevel    string `yaml:"log_level"`
-	ApiUrl      string `yaml:"api_url"`
-	AccessToken string `yaml:"access_token"`
-	Model       string `yaml:"model"`
+	ServerPort  int    `yaml:"SERVER_PORT" mapstructure:"SERVER_PORT"`
+	LogLevel    string `yaml:"LOG_LEVEL" mapstructure:"LOG_LEVEL"`
+	ApiUrl      string `yaml:"API_URL" mapstructure:"API_URL"`
+	AccessToken string `yaml:"ACCESS_TOKEN" mapstructure:"ACCESS_TOKEN"`
+	Model       string `yaml:"MODEL" mapstructure:"MODEL"`
 }
 
-var Instance *Config
+var Instance Config
 
-func Init() {
-	config := &Config{}
-	data, err := ioutil.ReadFile("config.yml")
+func Initialize() {
+	v := viper.New()
+	v.SetConfigFile("config.yaml")
+	v.SetConfigType("yaml")
+	// v.AutomaticEnv()
+	err := v.ReadInConfig()
 	if err != nil {
-		log.Fatal(err)
+		panic(fmt.Errorf("fatal error config file: %s", err))
 	}
-	err = yaml.Unmarshal(data, &config)
-	if err != nil {
-		log.Fatal(err)
+	v.WatchConfig()
+	v.OnConfigChange(func(e fsnotify.Event) {
+		if err = v.Unmarshal(&Instance); err != nil {
+			fmt.Println(err)
+		}
+	})
+	if err = v.Unmarshal(&Instance); err != nil {
+		fmt.Println(err)
 	}
-	// server port
-	serverPort := os.Getenv("SERVER_PORT")
-	if serverPort != "" {
-		config.ServerPort = serverPort
-	}
-	// log level
-	logLevel := os.Getenv("LOG_LEVEL")
-	if logLevel != "" {
-		config.LogLevel = logLevel
-	}
-	// access_token
-	accessToken := os.Getenv("ACCESS_TOKEN")
-	if accessToken != "" {
-		config.AccessToken = accessToken
-	}
-	// model
-	model := os.Getenv("MODEL")
-	if model != "" {
-		config.Model = model
-	} else {
-		config.Model = "text-davinci-002-render-sha"
-	}
-	Instance = config
 }

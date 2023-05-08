@@ -4,33 +4,43 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var Logger *log.Logger
+var logger *log.Logger
 
-func Init(level string) {
-	Logger = log.New()
+func Initialize(level string) {
+	logger = log.New()
+	formatter := log.TextFormatter{
+		ForceColors:               true,
+		EnvironmentOverrideColors: true,
+		TimestampFormat:           "2006-01-02 15:04:05",
+		FullTimestamp:             true,
+	}
+
+	logger.SetFormatter(&formatter)
 	if level == "debug" {
-		Logger.SetLevel(log.DebugLevel)
+		logger.SetLevel(log.DebugLevel)
+		logger.SetReportCaller(true)
 	} else {
-		Logger.SetLevel(log.InfoLevel)
+		logger.SetLevel(log.InfoLevel)
+		logger.SetReportCaller(false)
 	}
 }
 
-func Info(args ...interface{}) {
-	Logger.Info(args)
-}
-
-func Warning(args ...interface{}) {
-	Logger.Warn(args)
-}
-
 func Debug(args ...interface{}) {
-	Logger.Debug(args)
+	logger.Debug(args...)
+}
+
+func Info(args ...interface{}) {
+	logger.Info(args...)
+}
+
+func Warn(args ...interface{}) {
+	logger.Warn(args...)
 }
 
 func Error(args ...interface{}) {
-	Logger.Error(args)
+	logger.Error(args...)
 }
 
 func Fatal(args ...interface{}) {
-	Logger.Fatal(args)
+	logger.Fatal(args...)
 }

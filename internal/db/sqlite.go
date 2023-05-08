@@ -10,7 +10,7 @@ import (
 
 var DB *gorm.DB
 
-func Init() {
+func Initialize() {
 	err := os.MkdirAll("data", 0755)
 	if err != nil {
 		logger.Fatal(err)
