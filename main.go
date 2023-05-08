@@ -83,7 +83,7 @@ func main() {
 		dingbot := dingbot.NewDingBot(dingbot.DingBot{
 			SessionWebhook: msg.SessionWebhook,
 		})
-		err = dingbot.SendMarkdownMessage(msg.ConversationType, respContent, msg.SenderStaffID, msg.SenderNick)
+		err = dingbot.SendMarkdownMessage(msg.ConversationType, "markdown", respContent, msg.SenderStaffID, msg.SenderNick)
 		if err != nil {
 			logger.Error(err)
 		}
