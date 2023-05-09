@@ -1,4 +1,4 @@
-name: build docker image
+name: Release Docker Image
 
 # release 事件触发 + Master 分支触发 + 手动触发
 on:

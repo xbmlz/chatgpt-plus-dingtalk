@@ -1,4 +1,4 @@
-name: Build Release
+name: Release Binary
 
 on:
   release:
@@ -35,4 +35,4 @@ jobs:
           executable_compression: "upx -9"
           md5sum: false
           binary_name: "chatgpt-plus-dingtalk"
-          extra_files: ./config.example.yaml README.md
+          extra_files: ./config.example.yaml README.md LICENSE
