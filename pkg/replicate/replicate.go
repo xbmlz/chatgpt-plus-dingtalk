@@ -2,6 +2,8 @@ package replicate
 
 import (
 	"encoding/json"
+	"errors"
+	"time"
 
 	"github.com/xbmlz/chatgpt-dingtalk/pkg/fetch"
 )
@@ -24,12 +26,11 @@ type ImageGenerateResponse struct {
 	ID string `json:"id"`
 }
 
-type ImageGetResponseData struct {
-	Data string `json:"data"`
-}
-
 type ImageGetResponse struct {
-	Output []ImageGetResponseData `json:"output"`
+	Status string   `json:"status"`
+	Output []string `json:"output"`
+	Error  string   `json:"error"`
+	// Urls   ImageGetResponseUrls   `json:"urls"`
 }
 
 func New(options Replicate) *Replicate {
@@ -59,13 +60,27 @@ func (r *Replicate) Generate(param ImageGenerateRequest) (res string, err error)
 		return res, err
 	}
 	get := ImageGetResponse{}
-	getBody, err := fetch.GET(r.BaseUrl+"/v1/predictions/"+generate.ID, headers)
-	if err != nil {
-		return res, err
+	// when status is succeeded && status !== 'failed'
+
+	for {
+		// sleep 1000s
+		time.Sleep(1 * time.Second)
+		getBody, err := fetch.GET(r.BaseUrl+"/v1/predictions/"+generate.ID, headers)
+		if err != nil {
+			return res, err
+		}
+		err = json.Unmarshal([]byte(getBody), &get)
+		if err != nil {
+			return res, err
+		}
+		if get.Status == "failed" {
+			return res, errors.New(get.Error)
+		}
+		if get.Status == "succeeded" {
+			// output[0].data
+			res = get.Output[0]
+			break
+		}
 	}
-	err = json.Unmarshal([]byte(getBody), &get)
-	if get.Output == nil && len(get.Output) == 0 {
-		return res, err
-	}
-	return get.Output[0].Data, err
+	return res, nil
 }

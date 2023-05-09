@@ -44,6 +44,7 @@ func RootHandler(ctx *gin.Context) {
 			logger.Error(err)
 			errMsg := fmt.Sprintf("请求聊天机器人失败: %s", err.Error())
 			ding.SendMessage(dingbot.MSG_TEXT, errMsg)
+			return
 		}
 		imgMd := fmt.Sprintf("![image](%s)", url)
 		ding.SendMessage(dingbot.MSG_MD, imgMd)
@@ -74,14 +75,6 @@ func RootHandler(ctx *gin.Context) {
 	c.Action = "next"
 	c.Messages = []chatgpt.CompletionRequestMessage{
 		{
-			ID:   uuid.NewString(),
-			Role: "system",
-			Content: chatgpt.CompletionMessageContent{
-				ContentType: "text",
-				Parts:       []string{"你是 ChatGPT，一个由 OpenAI 训练的大型语言模型。请仔细遵循用户的指示。使用 Markdown 格式进行回应。"},
-			},
-		},
-		{
 			ID:   qMessageID,
 			Role: "user",
 			Content: chatgpt.CompletionMessageContent{
@@ -108,6 +101,7 @@ func RootHandler(ctx *gin.Context) {
 		logger.Error(err)
 		errMsg := fmt.Sprintf("请求聊天机器人失败: %s", err.Error())
 		ding.SendMessage(dingbot.MSG_TEXT, errMsg)
+		return
 	}
 	respContent := resp.Message.Content.Parts[0]
 	// send message
