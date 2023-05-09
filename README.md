@@ -1,3 +1,5 @@
-# ChatGPT DingTalk
+# ChatGPT Plus DingTalk Bot Plugin
 
-ChatGPT DingTalk robot plugin, based on unofficial proxy
+ChatGPT Plus DingTalk Bot Plugin
+
+Work in progress.
