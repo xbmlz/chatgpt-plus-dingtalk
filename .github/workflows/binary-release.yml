@@ -34,5 +34,5 @@ jobs:
           pre_command: export CGO_ENABLED=0 && export GODEBUG=http2client=0
           executable_compression: "upx -9"
           md5sum: false
-          binary_name: "chatgpt-dingtalk-bot"
-          extra_files: ./config.example.yaml README.md LICENSE
+          binary_name: "chatgpt-plus-dingtalk"
+          extra_files: ./config.example.yaml README.md
