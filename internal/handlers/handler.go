@@ -27,15 +27,15 @@ func RootHandler(ctx *gin.Context) {
 		SendHelp(ding)
 		return
 	}
-	if strings.HasPrefix(input, "#图片") {
-		input = strings.ReplaceAll(input, "#图片", "")
+	if strings.HasPrefix(input, "图片") {
+		input = strings.ReplaceAll(input, "图片", "")
 		image := replicate.New(replicate.Replicate{
-			BaseUrl:  "https://api.replicate.com",
-			ApiToken: "r8_EFqWf2Io13JHek548wcRb3I8Z34KDM51ykCia",
+			BaseUrl:  config.Instance.ReplicateBaseUrl,
+			ApiToken: config.Instance.ReplicateApiToken,
 		})
 
 		url, err := image.Generate(replicate.ImageGenerateRequest{
-			Version: "db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf",
+			Version: config.Instance.ReplicateModelVersion,
 			Input: replicate.ImageGenerateRequestInput{
 				Prompt: input,
 			},
@@ -83,7 +83,7 @@ func RootHandler(ctx *gin.Context) {
 			},
 		},
 	}
-	c.Model = config.Instance.Model
+	c.Model = config.Instance.ChatgptModel
 	if chatQuery.ID > 0 {
 		c.ConversationID = chatQuery.ConversationID
 		c.ParentMessageID = chatQuery.MessageID
@@ -93,8 +93,8 @@ func RootHandler(ctx *gin.Context) {
 	}
 	// create completion
 	chatgpt := chatgpt.NewChatGPT(chatgpt.ChatGPT{
-		BaseUrl:     config.Instance.ApiUrl,
-		AccessToken: config.Instance.AccessToken,
+		BaseUrl:     config.Instance.ChatgptBaseUrl,
+		AccessToken: config.Instance.ChatgptAccessToken,
 	})
 	resp, err := chatgpt.CreateCompletion(c)
 	if err != nil {
@@ -128,8 +128,9 @@ func SendHelp(ding *dingbot.DingBot) {
 
 	我是卫博士，一款基于ChatGPT技术的智能聊天机器人！
 	
-	回复 **图片 + 描述** 或 **/img + 描述** 生成图片。
-	回复 **帮助** 或 **help** 获取帮助信息。
+	🖼️ 回复 图片+空格+文字，可以生成一张图片哦！
+
+	🌴 回复 帮助，可以查看帮助哦！
 
 	`
 	ding.SendMessage(dingbot.MSG_MD, content)

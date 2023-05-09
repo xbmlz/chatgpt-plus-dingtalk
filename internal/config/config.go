@@ -8,11 +8,14 @@ import (
 )
 
 type Config struct {
-	ServerPort  int    `yaml:"SERVER_PORT" mapstructure:"SERVER_PORT"`
-	LogLevel    string `yaml:"LOG_LEVEL" mapstructure:"LOG_LEVEL"`
-	ApiUrl      string `yaml:"API_URL" mapstructure:"API_URL"`
-	AccessToken string `yaml:"ACCESS_TOKEN" mapstructure:"ACCESS_TOKEN"`
-	Model       string `yaml:"MODEL" mapstructure:"MODEL"`
+	ServerPort            int    `yaml:"SERVER_PORT" mapstructure:"SERVER_PORT"`
+	LogLevel              string `yaml:"LOG_LEVEL" mapstructure:"LOG_LEVEL"`
+	ChatgptBaseUrl        string `yaml:"CHATGPT_BASE_URL" mapstructure:"CHATGPT_BASE_URL"`
+	ChatgptAccessToken    string `yaml:"CHATGPT_ACCESS_TOKEN" mapstructure:"CHATGPT_ACCESS_TOKEN"`
+	ChatgptModel          string `yaml:"CHATGPT_MODEL" mapstructure:"CHATGPT_MODEL"`
+	ReplicateBaseUrl      string `yaml:"REPLICATE_BASE_URL" mapstructure:"REPLICATE_BASE_URL"`
+	ReplicateApiToken     string `yaml:"REPLICATE_API_TOKEN" mapstructure:"REPLICATE_API_TOKEN"`
+	ReplicateModelVersion string `yaml:"REPLICATE_MODEL_VERSION" mapstructure:"REPLICATE_MODEL_VERSION"`
 }
 
 var Instance Config

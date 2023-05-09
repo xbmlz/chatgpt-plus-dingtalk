@@ -1,6 +1,12 @@
-server_port: 8080
-log_level: debug
-api_url: https://ai.fakeopen.com/api
-model: text-davinci-002-render-sha
-# chatgpt access_token 
-access_token: xxx
+SERVER_PORT: 8080
+LOG_LEVEL: debug
+
+# chat gpt
+CHATGPT_BASE_URL: https://ai.fakeopen.com/api
+CHATGPT_MODEL: text-davinci-002-render-sha
+CHATGPT_ACCESS_TOKEN: xxxxx
+
+# Replicate
+REPLICATE_BASE_URL: https://api.replicate.com
+REPLICATE_API_TOKEN: xxxx
+REPLICATE_MODEL_VERSION: db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf
