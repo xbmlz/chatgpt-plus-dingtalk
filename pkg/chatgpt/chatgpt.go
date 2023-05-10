@@ -4,12 +4,9 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
-	"net/http"
 	"strings"
 
-	"errors"
-
+	"github.com/xbmlz/chatgpt-dingtalk/pkg/fetch"
 	"github.com/xbmlz/chatgpt-dingtalk/pkg/logger"
 )
 
@@ -63,7 +60,7 @@ type CompletionResponse struct {
 	Message        CompletionResponseMessage `json:"message"`         // 消息内容
 }
 
-func NewChatGPT(options ChatGPT) *ChatGPT {
+func New(options ChatGPT) *ChatGPT {
 	return &ChatGPT{
 		AccessToken: options.AccessToken,
 		BaseUrl:     options.BaseUrl,
@@ -75,25 +72,16 @@ func (c *ChatGPT) CreateCompletion(param CompletionRequest) (res CompletionRespo
 	if err != nil {
 		return res, err
 	}
-	req, err := http.NewRequest("POST", c.BaseUrl+"/conversation", bytes.NewBuffer(data))
+	headers := map[string]string{
+		"Accept":        "text/event-stream",
+		"Content-Type":  "application/json",
+		"Authorization": "Bearer " + c.AccessToken,
+	}
+	resp, err := fetch.POST(c.BaseUrl+"/conversation", headers, data)
 	if err != nil {
 		return res, err
 	}
-	req.Header.Add("Accept", "text/event-stream")
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", "Bearer "+c.AccessToken)
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return res, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		body, _ := ioutil.ReadAll(resp.Body)
-		return res, errors.New(string(body))
-	}
-	scanner := bufio.NewScanner(resp.Body)
+	scanner := bufio.NewScanner(bytes.NewReader(resp))
 	for scanner.Scan() {
 		line := scanner.Text()
 		// 处理每一行数据

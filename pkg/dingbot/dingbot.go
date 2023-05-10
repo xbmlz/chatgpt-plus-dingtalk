@@ -1,11 +1,11 @@
 package dingbot
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
+
+	"github.com/xbmlz/chatgpt-dingtalk/pkg/fetch"
 )
 
 type MsgType string
@@ -106,24 +106,16 @@ func (d *DingBot) SendMessage(mtype MsgType, msg string) (err error) {
 	if err != nil {
 		return err
 	}
-
-	req, err := http.NewRequest("POST", d.Msg.SessionWebhook, bytes.NewBuffer(data))
-
+	headers := map[string]string{
+		"Content-Type": "application/json",
+		"Accept":       "*/*",
+	}
+	resp, err := fetch.POST(d.Msg.SessionWebhook, headers, data)
 	if err != nil {
 		return err
 	}
-
-	req.Header.Add("Accept", "*/*")
-	req.Header.Add("Content-Type", "application/json")
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
 	response := DingBotResponse{}
-	err = json.NewDecoder(resp.Body).Decode(&response)
+	err = json.Unmarshal(resp, &response)
 	if err != nil {
 		return err
 	}

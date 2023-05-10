@@ -49,36 +49,36 @@ func (r *Replicate) Generate(param ImageGenerateRequest) (res string, err error)
 		"Content-Type":  "application/json",
 		"Authorization": "Token " + r.ApiToken,
 	}
-	generateBody, err := fetch.POST(r.BaseUrl+"/v1/predictions", headers, data)
+	raw, err := fetch.POST(r.BaseUrl+"/v1/predictions", headers, data)
 	if err != nil {
 		return res, err
 	}
 
-	generate := ImageGenerateResponse{}
-	err = json.Unmarshal([]byte(generateBody), &generate)
+	resp := ImageGenerateResponse{}
+	err = json.Unmarshal(raw, &resp)
 	if err != nil {
 		return res, err
 	}
-	get := ImageGetResponse{}
+	respGet := ImageGetResponse{}
 	// when status is succeeded && status !== 'failed'
 
 	for {
 		// sleep 1000s
 		time.Sleep(1 * time.Second)
-		getBody, err := fetch.GET(r.BaseUrl+"/v1/predictions/"+generate.ID, headers)
+		rawGet, err := fetch.GET(r.BaseUrl+"/v1/predictions/"+resp.ID, headers)
 		if err != nil {
 			return res, err
 		}
-		err = json.Unmarshal([]byte(getBody), &get)
+		err = json.Unmarshal(rawGet, &rawGet)
 		if err != nil {
 			return res, err
 		}
-		if get.Status == "failed" {
-			return res, errors.New(get.Error)
+		if respGet.Status == "failed" {
+			return res, errors.New(respGet.Error)
 		}
-		if get.Status == "succeeded" {
+		if respGet.Status == "succeeded" {
 			// output[0].data
-			res = get.Output[0]
+			res = respGet.Output[0]
 			break
 		}
 	}

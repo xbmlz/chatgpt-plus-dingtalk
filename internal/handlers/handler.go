@@ -24,7 +24,7 @@ func RootHandler(ctx *gin.Context) {
 	// TODO
 	input := msg.Text.Content
 	if strings.HasPrefix(input, "帮助") {
-		SendHelp(ding)
+		HelpAction(ding)
 		return
 	}
 	if strings.HasPrefix(input, "图片") {
@@ -92,7 +92,7 @@ func RootHandler(ctx *gin.Context) {
 		c.ParentMessageID = uuid.NewString()
 	}
 	// create completion
-	chatgpt := chatgpt.NewChatGPT(chatgpt.ChatGPT{
+	chatgpt := chatgpt.New(chatgpt.ChatGPT{
 		BaseUrl:     config.Instance.ChatgptBaseUrl,
 		AccessToken: config.Instance.ChatgptAccessToken,
 	})
@@ -122,16 +122,17 @@ func RootHandler(ctx *gin.Context) {
 	})
 }
 
-func SendHelp(ding *dingbot.DingBot) {
+func HelpAction(ding *dingbot.DingBot) {
 	content := `
 	### 🤖 需要帮助吗？
 
-	我是卫博士，一款基于ChatGPT技术的智能聊天机器人！
-	
-	🖼️ 回复 图片+空格+文字，可以生成一张图片哦！
+	**我是卫博士，一款基于ChatGPT技术的智能聊天机器人！**
 
-	🌴 回复 帮助，可以查看帮助哦！
+	🖼️ 生成图片👉 文本回复 *图片+空格+描述*
 
+	🐳 流程图 👉 文本回复 *流程图+空格+描述*
+
+	☘️ 帮助 👉 文本回复 *帮助*
 	`
 	ding.SendMessage(dingbot.MSG_MD, content)
 }
