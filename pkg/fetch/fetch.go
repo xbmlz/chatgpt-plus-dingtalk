@@ -7,10 +7,10 @@ import (
 	"net/http"
 )
 
-func GET(url string, headers map[string]string) (string, error) {
+func GET(url string, headers map[string]string) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	for k, v := range headers {
 		req.Header.Add(k, v)
@@ -18,23 +18,23 @@ func GET(url string, headers map[string]string) (string, error) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	if resp.StatusCode != 200 && resp.StatusCode != 201 {
-		return "", errors.New(string(body))
+		return nil, errors.New(string(body))
 	}
-	return string(body), nil
+	return body, nil
 }
 
-func POST(url string, headers map[string]string, data []byte) (string, error) {
+func POST(url string, headers map[string]string, data []byte) ([]byte, error) {
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	for k, v := range headers {
 		req.Header.Add(k, v)
@@ -42,15 +42,15 @@ func POST(url string, headers map[string]string, data []byte) (string, error) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	if resp.StatusCode != 200 && resp.StatusCode != 201 {
-		return "", errors.New(string(body))
+		return nil, errors.New(string(body))
 	}
-	return string(body), nil
+	return body, nil
 }
