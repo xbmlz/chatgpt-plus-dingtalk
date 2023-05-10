@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/xbmlz/chatgpt-dingtalk/pkg/fetch"
-	"github.com/xbmlz/chatgpt-dingtalk/pkg/logger"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/fetch"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/logger"
 )
 
 type ChatGPT struct {

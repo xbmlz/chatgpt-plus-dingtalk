@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/xbmlz/chatgpt-dingtalk/pkg/utils"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/utils"
 )
 
 func TestMermaid(t *testing.T) {

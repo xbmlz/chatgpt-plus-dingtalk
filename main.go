@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/xbmlz/chatgpt-dingtalk/internal/config"
-	"github.com/xbmlz/chatgpt-dingtalk/internal/db"
-	"github.com/xbmlz/chatgpt-dingtalk/internal/handlers"
-	"github.com/xbmlz/chatgpt-dingtalk/pkg/logger"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/internal/config"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/internal/db"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/internal/handlers"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/logger"
 )
 
 func main() {

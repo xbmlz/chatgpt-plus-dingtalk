@@ -3,7 +3,7 @@ package db
 import (
 	"os"
 
-	"github.com/xbmlz/chatgpt-dingtalk/pkg/logger"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/logger"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )

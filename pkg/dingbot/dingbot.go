@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/xbmlz/chatgpt-dingtalk/pkg/fetch"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/fetch"
 )
 
 type MsgType string

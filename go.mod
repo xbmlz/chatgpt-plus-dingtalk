@@ -1,4 +1,4 @@
-module github.com/xbmlz/chatgpt-dingtalk
+module github.com/xbmlz/chatgpt-plus-dingtalk
 
 go 1.18
 
