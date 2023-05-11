@@ -15,10 +15,14 @@ RUN mkdir /app && apk upgrade \
     && apk add bash tzdata \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
-    && apk add --no-cache chromium
+    && apk add --no-cache chromium \
+    && apk add --update ttf-dejavu fontconfig \
+    && rm -rf /var/cache/apk/* \
+    && mkfontscale && mkfontdir && fc-cache -fv
 
 WORKDIR /app
 COPY --from=builder /app/ .
+COPY pkg/mermaid/SIMSUN.TTC /usr/share/fonts/zh/
 RUN chmod +x chatgpt-plus-dingtalk && cp config.example.yml config.yml
 
 CMD ./chatgpt-plus-dingtalk
