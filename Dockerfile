@@ -14,8 +14,7 @@ ENV TZ ${TZ}
 RUN mkdir /app && apk upgrade \
     && apk add bash tzdata \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
-    && echo ${TZ} > /etc/timezone \
-    && apk add --no-cache chromium
+    && echo ${TZ} > /etc/timezone
 
 WORKDIR /app
 COPY --from=builder /app/ .
