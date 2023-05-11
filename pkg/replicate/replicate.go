@@ -69,7 +69,7 @@ func (r *Replicate) Generate(param ImageGenerateRequest) (res string, err error)
 		if err != nil {
 			return res, err
 		}
-		err = json.Unmarshal(rawGet, &rawGet)
+		err = json.Unmarshal(rawGet, &respGet)
 		if err != nil {
 			return res, err
 		}

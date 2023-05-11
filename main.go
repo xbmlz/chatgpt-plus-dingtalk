@@ -20,8 +20,12 @@ func main() {
 	logger.Initialize(config.Instance.LogLevel)
 	db.Initialize()
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"msg": "pong"}) })
 	r.POST("/", handlers.RootHandler)
+	r.GET("/ping", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"msg": "pong"}) })
+	r.GET("/images/:filename", func(c *gin.Context) {
+		filename := c.Param("filename")
+		c.File("./data/images/" + filename)
+	})
 	port := fmt.Sprintf(":%d", config.Instance.ServerPort)
 	srv := &http.Server{
 		Addr:    port,

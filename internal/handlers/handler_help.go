@@ -2,8 +2,8 @@ package handlers
 
 import "github.com/xbmlz/chatgpt-plus-dingtalk/pkg/dingbot"
 
-func HandlerHelp(ding *dingbot.DingBot) {
-	content := `
+func HandlerHelp(msg dingbot.DingBotReceiveMessage) (retMsg string) {
+	retMsg = `
 	### 🤖 需要帮助吗？
 
 	**我是卫博士，一款基于ChatGPT技术的智能聊天机器人！**
@@ -14,5 +14,5 @@ func HandlerHelp(ding *dingbot.DingBot) {
 
 	☘️ 帮助 👉 文本回复 *帮助*
 	`
-	ding.SendMessage(dingbot.MSG_MD, content)
+	return
 }

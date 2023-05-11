@@ -8,6 +8,7 @@ import (
 )
 
 type Config struct {
+	ServerUrl             string `yaml:"SERVER_URL" mapstructure:"SERVER_URL"`
 	ServerPort            int    `yaml:"SERVER_PORT" mapstructure:"SERVER_PORT"`
 	LogLevel              string `yaml:"LOG_LEVEL" mapstructure:"LOG_LEVEL"`
 	ChatgptBaseUrl        string `yaml:"CHATGPT_BASE_URL" mapstructure:"CHATGPT_BASE_URL"`

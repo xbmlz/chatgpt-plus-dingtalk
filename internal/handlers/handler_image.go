@@ -10,24 +10,25 @@ import (
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/replicate"
 )
 
-func HandlerImage(ding *dingbot.DingBot, msg dingbot.DingBotReceiveMessage) {
+func HandlerImage(msg dingbot.DingBotReceiveMessage) (retMsg string) {
 	image := replicate.New(replicate.Replicate{
 		BaseUrl:  config.Instance.ReplicateBaseUrl,
 		ApiToken: config.Instance.ReplicateApiToken,
 	})
-
+	prompt := strings.ReplaceAll(msg.Text.Content, "图片", "")
 	url, err := image.Generate(replicate.ImageGenerateRequest{
 		Version: config.Instance.ReplicateModelVersion,
 		Input: replicate.ImageGenerateRequestInput{
-			Prompt: strings.ReplaceAll(msg.Text.Content, "图片", ""),
+			Prompt: prompt,
 		},
 	})
 	if err != nil {
 		logger.Error(err)
-		errMsg := fmt.Sprintf("请求聊天机器人失败: %s", err.Error())
-		ding.SendMessage(dingbot.MSG_TEXT, errMsg)
+		retMsg = fmt.Sprintf("🚨 replicate 请求失败，请联系管理员: %s", err.Error())
+		// ding.SendMessage(dingbot.MSG_TEXT, errMsg)
 		return
 	}
-	imgMd := fmt.Sprintf("![image](%s)", url)
-	ding.SendMessage(dingbot.MSG_MD, imgMd)
+	retMsg = fmt.Sprintf("![image](%s)", url)
+	// ding.SendMessage(dingbot.MSG_MD, imgMd)
+	return
 }

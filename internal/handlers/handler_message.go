@@ -11,7 +11,7 @@ import (
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/logger"
 )
 
-func HandlerMessage(ding *dingbot.DingBot, msg dingbot.DingBotReceiveMessage) {
+func HandlerMessage(msg dingbot.DingBotReceiveMessage) (retMsg string) {
 	qMessageID := uuid.NewString()
 	db.Save(&db.Chat{
 		DingTalkConversationID: msg.ConversationID,
@@ -59,17 +59,10 @@ func HandlerMessage(ding *dingbot.DingBot, msg dingbot.DingBotReceiveMessage) {
 	resp, err := chatgpt.CreateCompletion(c)
 	if err != nil {
 		logger.Error(err)
-		errMsg := fmt.Sprintf("请求聊天机器人失败: %s", err.Error())
-		ding.SendMessage(dingbot.MSG_TEXT, errMsg)
+		retMsg = fmt.Sprintf("chatgpt请求失败，请联系管理员: %s", err.Error())
 		return
 	}
-	respContent := resp.Message.Content.Parts[0]
-	// send message
-	err = ding.SendMessage(dingbot.MSG_MD, respContent)
-	if err != nil {
-		logger.Error(err)
-	}
-	// save answer message
+	retMsg = resp.Message.Content.Parts[0]
 	db.Save(&db.Chat{
 		DingTalkConversationID: msg.ConversationID,
 		SenderID:               msg.SenderID,
@@ -78,6 +71,7 @@ func HandlerMessage(ding *dingbot.DingBot, msg dingbot.DingBotReceiveMessage) {
 		ConversationID:         resp.ConversationID,
 		ConversationMode:       db.ANSWER_MODE,
 		ConversationType:       msg.ConversationType,
-		Content:                respContent,
+		Content:                retMsg,
 	})
+	return
 }
