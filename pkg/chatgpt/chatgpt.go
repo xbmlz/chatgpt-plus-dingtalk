@@ -105,3 +105,16 @@ func (c *ChatGPT) CreateCompletion(param CompletionRequest) (res CompletionRespo
 
 	return res, nil
 }
+
+func (c *ChatGPT) DeleteConversation(id string) (err error) {
+	headers := map[string]string{
+		"Accept":        "text/event-stream",
+		"Content-Type":  "application/json",
+		"Authorization": "Bearer " + c.AccessToken,
+	}
+	_, err = fetch.DELETE(c.BaseUrl+"/conversation/"+id, headers)
+	if err != nil {
+		return
+	}
+	return nil
+}

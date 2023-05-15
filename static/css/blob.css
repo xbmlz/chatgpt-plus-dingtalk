@@ -1,0 +1,170 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;
+    --base: #444;
+    --nav-height: 50px;
+}
+
+#app {
+    height: 100%;
+}
+
+.header {
+    color: var(--base);
+    height: var(--nav-height);
+    font-size: 13px;
+    box-sizing: border-box;
+    padding: 0 1em;
+    background-color: #fff;
+    /* box-shadow: 0 0 4px #00000054; */
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header h1 {
+    font-weight: 500;
+    display: inline-flex;
+    place-items: center;
+}
+
+.actions button,
+.actions button a {
+    color: #666;
+}
+
+.actions {
+    display: flex;
+    margin-left: 4px;
+}
+
+.actions>* {
+    display: flex;
+    align-items: center;
+}
+
+.actions .mode span {
+    color: #fff;
+    background-color: #3ca877;
+    font-size: 12px;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+
+.actions>* {
+    display: flex;
+    align-items: center;
+}
+
+.actions button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin: 0;
+    background-color: transparent;
+}
+
+.container {
+    /* flex relative h-100% */
+    margin: 0;
+    background-color: var(--bg-soft);
+    display: flex;
+    position: relative;
+    height: calc(100vh - var(--nav-height));
+}
+
+.container.dragging {
+    cursor: ew-resize;
+}
+
+.editor {
+    /* h-100% relative border-r-1 border-gray-3 */
+    position: relative;
+    height: 100%;
+    border-right: 1px solid #ddd;
+}
+
+.editor-container {
+    /* w-100% h-100% relative overflow-hidden */
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+
+.output {
+    /* h-100% relative */
+    position: relative;
+    height: 100%;
+}
+
+.output-container {
+    /* w-100% h-100% relative overflow-hidden */
+    padding: 15px 0;
+    box-sizing: border-box;
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    /* ov
+    erflow: hidden; */
+}
+
+.output-markdown {
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.output-mermaid {
+    height: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+#graph-div {
+    height: 100%;
+}
+
+
+.dragger {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    bottom: 0;
+    right: -5px;
+    width: 10px;
+    cursor: ew-resize;
+}
+
+
+.CodeMirror {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    line-height: 1.5;
+    height: 100%;
+}
+
+.editor-container::-webkit-scrollbar,
+.output-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome Safari */
+}
+
+.output-container,
+.editor-container {
+    scrollbar-width: none;
+    /* firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+svg.markmap {
+    width: 100%;
+    height: 100vh;
+}

@@ -34,3 +34,8 @@ func Save(c *Chat) error {
 func FindOne(filter map[string]interface{}, chat *Chat) error {
 	return DB.Where(filter).Last(&chat).Error
 }
+
+// Delete
+func DeleteByDingTalkConversationID(dingTalkConversation_id string) error {
+	return DB.Where("ding_talk_conversation_id = ?", dingTalkConversation_id).Delete(&Chat{}).Error
+}

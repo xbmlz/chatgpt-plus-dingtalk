@@ -12,12 +12,18 @@ import (
 )
 
 func HandlerMessage(msg dingbot.DingBotReceiveMessage) (retMsg string) {
-	qMessageID := uuid.NewString()
+	retID, retMsg := AskChatGPT(msg)
+	link := fmt.Sprintf(config.Instance.ServerUrl+"/blob?id=%s&type=markdown", retID)
+	retMsg += fmt.Sprintf("\n\n[在浏览器中查看此消息](%s)", link)
+	return
+}
+
+func AskChatGPT(msg dingbot.DingBotReceiveMessage) (retID, retMsg string) {
 	db.Save(&db.Chat{
 		DingTalkConversationID: msg.ConversationID,
 		SenderID:               msg.SenderID,
 		SenderNick:             msg.SenderNick,
-		MessageID:              qMessageID,
+		MessageID:              msg.MsgID,
 		ConversationID:         "",
 		ConversationMode:       db.QUESTION_MODE,
 		ConversationType:       msg.ConversationType,
@@ -35,7 +41,7 @@ func HandlerMessage(msg dingbot.DingBotReceiveMessage) (retMsg string) {
 	c.Action = "next"
 	c.Messages = []chatgpt.CompletionRequestMessage{
 		{
-			ID:   qMessageID,
+			ID:   msg.MsgID,
 			Role: "user",
 			Content: chatgpt.CompletionMessageContent{
 				ContentType: "text",
@@ -63,6 +69,7 @@ func HandlerMessage(msg dingbot.DingBotReceiveMessage) (retMsg string) {
 		return
 	}
 	retMsg = resp.Message.Content.Parts[0]
+	retID = resp.Message.ID
 	db.Save(&db.Chat{
 		DingTalkConversationID: msg.ConversationID,
 		SenderID:               msg.SenderID,

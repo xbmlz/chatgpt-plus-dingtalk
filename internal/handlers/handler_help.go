@@ -10,7 +10,9 @@ func HandlerHelp(msg dingbot.DingBotReceiveMessage) (retMsg string) {
 
 	🖼️ 生成图片👉 文本回复 *图片+空格+描述*
 
-	🐳 流程图 👉 文本回复 *流程图+空格+描述*
+	🐳 流程图  👉 文本回复 *流程图+空格+描述*
+
+	♻️ 重置会话 👉 文本回复 *重置*
 
 	☘️ 帮助 👉 文本回复 *帮助*
 	`

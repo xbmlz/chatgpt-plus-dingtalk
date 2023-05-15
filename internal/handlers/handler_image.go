@@ -11,6 +11,7 @@ import (
 )
 
 func HandlerImage(msg dingbot.DingBotReceiveMessage) (retMsg string) {
+	msg.Text.Content = "你帮我生成一个关于 " + msg.Text.Content + " 的图片, 用Unsplash API表示，并遵循以下的格式：https://source.unsplash.com/1600x900/?< PUT YOUR QUERY HERE >，只回复我链接，不需要其他表述"
 	image := replicate.New(replicate.Replicate{
 		BaseUrl:  config.Instance.ReplicateBaseUrl,
 		ApiToken: config.Instance.ReplicateApiToken,
@@ -29,6 +30,7 @@ func HandlerImage(msg dingbot.DingBotReceiveMessage) (retMsg string) {
 		return
 	}
 	retMsg = fmt.Sprintf("![image](%s)", url)
-	// ding.SendMessage(dingbot.MSG_MD, imgMd)
+	// _, retMsg = AskChatGPT(msg)
+	// retMsg = fmt.Sprintf("![image](%s)", retMsg)
 	return
 }

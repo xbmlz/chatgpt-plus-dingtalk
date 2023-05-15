@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 	"os/signal"
@@ -20,8 +21,17 @@ func main() {
 	logger.Initialize(config.Instance.LogLevel)
 	db.Initialize()
 	r := gin.Default()
+	r.Delims("${", "}")
+	r.SetFuncMap(template.FuncMap{
+		"safe": func(str string) template.HTML {
+			return template.HTML(str)
+		},
+	})
+	r.LoadHTMLGlob("templates/*")
+	r.Static("/static", "./static")
 	r.POST("/", handlers.RootHandler)
 	r.GET("/ping", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"msg": "pong"}) })
+	r.GET("/blob", handlers.BlobHandler)
 	r.GET("/images/:filename", func(c *gin.Context) {
 		filename := c.Param("filename")
 		c.File("./data/images/" + filename)

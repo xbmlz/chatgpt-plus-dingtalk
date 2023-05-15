@@ -26,6 +26,13 @@ type DingBotMarkdown struct {
 	Title string `json:"title"` // markdown 消息标题
 }
 
+type DingBotLink struct {
+	MessageUrl string `json:"messageUrl"` // 消息点击链接地址
+	Title      string `json:"title"`      // 消息标题
+	PicUrl     string `json:"picUrl"`     // 图片地址
+	Text       string `json:"text"`       // 消息内容。如果太长只会部分展示
+}
+
 // See https://open.dingtalk.com/document/orgapp/the-application-robot-in-the-enterprise-sends-a-single-chat
 type DingBotReceiveMessage struct {
 	ConversationID string `json:"conversationId"` // 群ID

@@ -5,9 +5,12 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/dingbot"
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/logger"
 )
+
+type ActionType string
 
 func RootHandler(ctx *gin.Context) {
 	var msg dingbot.DingBotReceiveMessage
@@ -15,23 +18,24 @@ func RootHandler(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
+	msg.MsgID = uuid.NewString()
 	ding := dingbot.New(msg)
 	input := msg.Text.Content
-	var ret string
+	var retMsg string
 	if strings.HasPrefix(input, "帮助") || input == "" {
-		ret = HandlerHelp(msg)
+		retMsg = HandlerHelp(msg)
 	} else if strings.HasPrefix(input, "图片") {
-		ret = HandlerImage(msg)
+		retMsg = HandlerImage(msg)
 	} else if strings.HasPrefix(input, "流程图") {
-		msg.Text.Content = "帮我使用mermaid-js 10.x中的graph TD语法设计一个 " + msg.Text.Content + " 流程图，并在最后做简要描述"
-		ret = HandlerMermaid(msg)
+		retMsg = HandlerFlowchart(msg)
 	} else if strings.HasPrefix(input, "脑图") {
-		msg.Text.Content = "帮我使用mermaid-js 10.x中的graph LR语法设计一个 " + msg.Text.Content + " 脑图，并在最后做简要描述"
-		ret = HandlerMermaid(msg)
+		retMsg = HandlerMindmap(msg)
+	} else if strings.HasPrefix(input, "重置") {
+		retMsg = HandlerReset(msg)
 	} else {
-		ret = HandlerMessage(msg)
+		retMsg = HandlerMessage(msg)
 	}
-	err = ding.SendMessage(dingbot.MSG_MD, ret)
+	err = ding.SendMessage(dingbot.MSG_MD, retMsg)
 	if err != nil {
 		logger.Error(err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})

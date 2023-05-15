@@ -2,7 +2,7 @@ package utils
 
 import "strings"
 
-func ExtractStringBetween(start, end, content string) (ret string) {
+func ExtractStringBetween(content, start, end string) (ret string) {
 	startIndex := strings.Index(content, start)
 	endIndex := strings.LastIndex(content, end)
 	if startIndex != -1 || endIndex != -1 {
