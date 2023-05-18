@@ -21,6 +21,10 @@ type DingBotText struct {
 	Content string `json:"content"` // 消息文本
 }
 
+type DingBotContent struct {
+	DownloadCode string `json:"downloadCode"` // 文件下载的唯一标识
+}
+
 type DingBotMarkdown struct {
 	Text  string `json:"text"`  // markdown 消息内容
 	Title string `json:"title"` // markdown 消息标题
@@ -39,21 +43,22 @@ type DingBotReceiveMessage struct {
 	AtUsers        []struct {
 		DingtalkID string `json:"dingtalkId"` // 加密的发送者ID
 	} `json:"atUsers"` // 被@人的信息
-	ChatbotUserID             string      `json:"chatbotUserId"`             // 加密的发送者ID
-	MsgID                     string      `json:"msgId"`                     // 消息ID
-	SenderNick                string      `json:"senderNick"`                // 发送者昵称
-	IsAdmin                   bool        `json:"isAdmin"`                   // 是否是管理员
-	SenderStaffID             string      `json:"senderStaffId"`             // 企业内部群中@该机器人的成员userid
-	SessionWebhookExpiredTime int64       `json:"sessionWebhookExpiredTime"` // 会话过期时间戳，单位毫秒
-	CreateAt                  int64       `json:"createAt"`                  // 消息创建时间戳，单位毫秒
-	ConversationType          string      `json:"conversationType"`          // 会话类型，1表示私聊 2表示群聊
-	SenderID                  string      `json:"senderId"`                  // @该机器人的成员的加密ID
-	ConversationTitle         string      `json:"conversationTitle"`         // 会话标题
-	IsInAtList                bool        `json:"isInAtList"`                // 是否在@列表中
-	SessionWebhook            string      `json:"sessionWebhook"`            // 当前会话的Webhook地址
-	Text                      DingBotText `json:"text"`                      // 消息文本
-	RobotCode                 string      `json:"robotCode"`                 // 机器人code 自定义机器人默认为normal
-	MsgType                   string      `json:"msgtype"`                   // 消息类型 目前只支持text
+	ChatbotUserID             string         `json:"chatbotUserId"`             // 加密的发送者ID
+	MsgID                     string         `json:"msgId"`                     // 消息ID
+	SenderNick                string         `json:"senderNick"`                // 发送者昵称
+	IsAdmin                   bool           `json:"isAdmin"`                   // 是否是管理员
+	SenderStaffID             string         `json:"senderStaffId"`             // 企业内部群中@该机器人的成员userid
+	SessionWebhookExpiredTime int64          `json:"sessionWebhookExpiredTime"` // 会话过期时间戳，单位毫秒
+	CreateAt                  int64          `json:"createAt"`                  // 消息创建时间戳，单位毫秒
+	ConversationType          string         `json:"conversationType"`          // 会话类型，1表示私聊 2表示群聊
+	SenderID                  string         `json:"senderId"`                  // @该机器人的成员的加密ID
+	ConversationTitle         string         `json:"conversationTitle"`         // 会话标题
+	IsInAtList                bool           `json:"isInAtList"`                // 是否在@列表中
+	SessionWebhook            string         `json:"sessionWebhook"`            // 当前会话的Webhook地址
+	Text                      DingBotText    `json:"text"`                      // 消息文本
+	RobotCode                 string         `json:"robotCode"`                 // 机器人code 自定义机器人默认为normal
+	MsgType                   string         `json:"msgtype"`                   // 消息类型 目前只支持text
+	Content                   DingBotContent `json:"content"`                   // 文件消息内容
 }
 
 type DingBotSendMessage struct {

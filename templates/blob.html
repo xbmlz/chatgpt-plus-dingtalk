@@ -8,21 +8,20 @@
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/css/blob.css">
     <link rel="stylesheet" href="/static/css/codemirror.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/github.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.14.4/dist/style.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.51.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.51.0/mode/markdown/markdown.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.14.4/dist/browser/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3@6"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
-    <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.14.4/dist/index.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/github-markdown-css@5.2.0/github-markdown.css">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.8.0/styles/github.min.css">
+
+    <script src="https://unpkg.com/vue@2.7.14/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+    <script src="https://unpkg.com/codemirror@5.51.0/lib/codemirror.js"></script>
+    <script src="https://unpkg.com/codemirror@5.51.0/mode/markdown/markdown.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.8.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/d3@6.7.0/dist/d3.min.js"></script>
+    <script src="https://unpkg.com/markmap-lib@0.14.4/dist/browser/index.min.js"></script>
+    <script src="https://unpkg.com/markmap-view@0.14.4/dist/index.min.js"></script>
+    <script src="https://unpkg.com/markmap-toolbar@0.14.4/dist/index.umd.min.js"></script>
+    <script src="https://unpkg.com/mermaid@9.4.3/dist/mermaid.min.js"></script>
+    <script src="https://unpkg.com/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
 <body>
     <div id="app">
         <textarea style="display:none" ref="chat">${ .chat.Content | safe }</textarea>
@@ -226,7 +225,7 @@
                         this.$nextTick(() => {
                             const el = document.querySelector('#mermaid')
                             el.innerHTML = svg;
-                            console.log(el)
+                            // console.log(el)
                             pz = svgPanZoom(document.querySelector('#graph-div'), {
                                 controlIconsEnabled: true,
                                 fit: true,
