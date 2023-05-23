@@ -19,6 +19,6 @@ RUN mkdir /app && apk upgrade \
 
 WORKDIR /app
 COPY --from=builder /app/ .
-RUN chmod +x chatgpt-plus-dingtalk && cp config.example.yml config.yml
+RUN chmod +x chatgpt-plus-dingtalk && cp config.example.yaml config.yaml
 
 CMD ./chatgpt-plus-dingtalk
