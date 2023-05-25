@@ -3,8 +3,8 @@ package db
 import (
 	"os"
 
+	"github.com/glebarez/sqlite"
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/logger"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 

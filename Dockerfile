@@ -1,6 +1,5 @@
 FROM golang:1.18.10-alpine3.16 AS builder
 
-RUN apk add --no-cache build-base
 RUN mkdir /app
 ADD . /app/
 WORKDIR /app
