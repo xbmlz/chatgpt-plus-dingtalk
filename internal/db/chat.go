@@ -49,7 +49,7 @@ func FindAllDingTalkConversationId() ([]string, error) {
 		return conversationID, err
 	}
 	for _, v := range chat {
-		conversationID = append(conversationID, v.ConversationID)
+		conversationID = append(conversationID, v.DingTalkConversationID)
 	}
 	return conversationID, nil
 }
