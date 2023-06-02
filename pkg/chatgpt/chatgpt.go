@@ -108,7 +108,6 @@ func (c *ChatGPT) CreateCompletion(param CompletionRequest) (res CompletionRespo
 
 func (c *ChatGPT) DeleteConversation(id string) (err error) {
 	headers := map[string]string{
-		"Accept":        "text/event-stream",
 		"Content-Type":  "application/json",
 		"Authorization": "Bearer " + c.AccessToken,
 	}

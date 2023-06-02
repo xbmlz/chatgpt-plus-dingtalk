@@ -53,3 +53,13 @@ func FindAllDingTalkConversationId() ([]string, error) {
 	}
 	return conversationID, nil
 }
+
+// FindGptConversationId find gpt conversation id
+func FindGptConversationId(dingTalkConversationId string) (string, error) {
+	var chat Chat
+	err := DB.Where("ding_talk_conversation_id = ? and conversation_id != ''", dingTalkConversationId).Last(&chat).Error
+	if err != nil {
+		return "", err
+	}
+	return chat.ConversationID, nil
+}
