@@ -57,7 +57,7 @@ func FindAllDingTalkConversationId() ([]string, error) {
 // FindGptConversationId find gpt conversation id
 func FindGptConversationId(dingTalkConversationId string) (string, error) {
 	var chat Chat
-	err := DB.Where("ding_talk_conversation_id = ? and conversation_id != ''", dingTalkConversationId).Last(&chat).Error
+	err := DB.Where("ding_talk_conversation_id = ? and conversation_mode = 2", dingTalkConversationId).Last(&chat).Error
 	if err != nil {
 		return "", err
 	}
