@@ -11,7 +11,7 @@ import (
 func CleanAllSessionInterval() {
 	logger.Info("会话清除定时任务启动", time.Now())
 
-	conversationID, err := db.FindAllConversationID()
+	conversationID, err := db.FindAllDingTalkConversationId()
 	if err != nil {
 		logger.Error("查询会话ID失败：", err)
 		return
