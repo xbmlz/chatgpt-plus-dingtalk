@@ -39,3 +39,27 @@ func FindOne(filter map[string]interface{}, chat *Chat) error {
 func DeleteByDingTalkConversationID(dingTalkConversation_id string) error {
 	return DB.Where("ding_talk_conversation_id = ?", dingTalkConversation_id).Delete(&Chat{}).Error
 }
+
+// FindAllDingTalkConversationId find all ding talk conversation id
+func FindAllDingTalkConversationId() ([]string, error) {
+	var chat []Chat
+	var conversationID []string
+	err := DB.Distinct("ding_talk_conversation_id").Find(&chat).Error
+	if err != nil {
+		return conversationID, err
+	}
+	for _, v := range chat {
+		conversationID = append(conversationID, v.DingTalkConversationID)
+	}
+	return conversationID, nil
+}
+
+// FindGptConversationId find gpt conversation id
+func FindGptConversationId(dingTalkConversationId string) (string, error) {
+	var chat Chat
+	err := DB.Where("ding_talk_conversation_id = ? and conversation_mode = 2", dingTalkConversationId).Last(&chat).Error
+	if err != nil {
+		return "", err
+	}
+	return chat.ConversationID, nil
+}

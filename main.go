@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/xbmlz/chatgpt-plus-dingtalk/internal/task"
 	"html/template"
 	"net/http"
 	"os"
@@ -20,6 +21,7 @@ func main() {
 	config.Initialize()
 	logger.Initialize(config.Instance.LogLevel)
 	db.Initialize()
+	task.Initialize()
 	r := gin.Default()
 	r.Delims("${", "}")
 	r.SetFuncMap(template.FuncMap{

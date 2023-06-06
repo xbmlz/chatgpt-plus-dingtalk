@@ -17,6 +17,7 @@ type Config struct {
 	ReplicateBaseUrl      string `yaml:"REPLICATE_BASE_URL" mapstructure:"REPLICATE_BASE_URL"`
 	ReplicateApiToken     string `yaml:"REPLICATE_API_TOKEN" mapstructure:"REPLICATE_API_TOKEN"`
 	ReplicateModelVersion string `yaml:"REPLICATE_MODEL_VERSION" mapstructure:"REPLICATE_MODEL_VERSION"`
+	CleanAllSessionCron   string `yaml:"CLEAN_ALL_SESSION_CRON" mapstructure:"CLEAN_ALL_SESSION_CRON"`
 }
 
 var Instance Config

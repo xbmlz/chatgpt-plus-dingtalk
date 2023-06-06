@@ -12,13 +12,22 @@ func HandlerReset(msg dingbot.DingBotReceiveMessage) (retMsg string) {
 		BaseUrl:     config.Instance.ChatgptBaseUrl,
 		AccessToken: config.Instance.ChatgptAccessToken,
 	})
-	err := chatgpt.DeleteConversation(msg.ConversationID)
+	retMsg = "❌ 重置会话失败, 请稍后再试"
+	gptConversationID, err := db.FindGptConversationId(msg.ConversationID)
 	if err != nil {
-		err = db.DeleteByDingTalkConversationID(msg.ConversationID)
+		return
+	}
+	if gptConversationID != "" {
+		err = chatgpt.DeleteConversation(gptConversationID)
 		if err != nil {
-			retMsg = "❌ 重置会话失败, 请稍后再试"
+			return
 		}
 	}
+	err = db.DeleteByDingTalkConversationID(msg.ConversationID)
+	if err != nil {
+		return
+	}
+
 	retMsg = "♻️ 重置会话成功"
 	return
 }
