@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"strings"
 
+	"github.com/xbmlz/chatgpt-plus-dingtalk/internal/config"
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/fetch"
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/logger"
 )
@@ -77,7 +78,7 @@ func (c *ChatGPT) CreateCompletion(param CompletionRequest) (res CompletionRespo
 		"Content-Type":  "application/json",
 		"Authorization": "Bearer " + c.AccessToken,
 	}
-	resp, err := fetch.POST(c.BaseUrl+"/conversation", headers, data)
+	resp, err := fetch.POST(c.BaseUrl+"/conversation", headers, data, config.Instance.HttpTimeout, config.Instance.HttpProxyUrl)
 	if err != nil {
 		return res, err
 	}
@@ -111,7 +112,7 @@ func (c *ChatGPT) DeleteConversation(id string) (err error) {
 		"Content-Type":  "application/json",
 		"Authorization": "Bearer " + c.AccessToken,
 	}
-	_, err = fetch.DELETE(c.BaseUrl+"/conversation/"+id, headers)
+	_, err = fetch.DELETE(c.BaseUrl+"/conversation/"+id, headers, config.Instance.HttpTimeout, config.Instance.HttpProxyUrl)
 	if err != nil {
 		return
 	}

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/xbmlz/chatgpt-plus-dingtalk/internal/config"
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/fetch"
 )
 
@@ -122,7 +123,7 @@ func (d *DingBot) SendMessage(mtype MsgType, msg string) (err error) {
 		"Content-Type": "application/json",
 		"Accept":       "*/*",
 	}
-	resp, err := fetch.POST(d.Msg.SessionWebhook, headers, data)
+	resp, err := fetch.POST(d.Msg.SessionWebhook, headers, data, config.Instance.HttpTimeout, config.Instance.HttpProxyUrl)
 	if err != nil {
 		return err
 	}

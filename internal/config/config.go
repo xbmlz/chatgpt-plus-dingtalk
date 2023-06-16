@@ -11,6 +11,8 @@ type Config struct {
 	ServerUrl             string `yaml:"SERVER_URL" mapstructure:"SERVER_URL"`
 	ServerPort            int    `yaml:"SERVER_PORT" mapstructure:"SERVER_PORT"`
 	LogLevel              string `yaml:"LOG_LEVEL" mapstructure:"LOG_LEVEL"`
+	HttpTimeout           int    `yaml:"HTTP_TIMEOUT" mapstructure:"HTTP_TIMEOUT"`
+	HttpProxyUrl          string `yaml:"HTTP_PROXY_URL" mapstructure:"HTTP_PROXY_URL"`
 	ChatgptBaseUrl        string `yaml:"CHATGPT_BASE_URL" mapstructure:"CHATGPT_BASE_URL"`
 	ChatgptAccessToken    string `yaml:"CHATGPT_ACCESS_TOKEN" mapstructure:"CHATGPT_ACCESS_TOKEN"`
 	ChatgptModel          string `yaml:"CHATGPT_MODEL" mapstructure:"CHATGPT_MODEL"`

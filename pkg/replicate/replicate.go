@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/xbmlz/chatgpt-plus-dingtalk/internal/config"
 	"github.com/xbmlz/chatgpt-plus-dingtalk/pkg/fetch"
 )
 
@@ -49,7 +50,7 @@ func (r *Replicate) Generate(param ImageGenerateRequest) (res string, err error)
 		"Content-Type":  "application/json",
 		"Authorization": "Token " + r.ApiToken,
 	}
-	raw, err := fetch.POST(r.BaseUrl+"/v1/predictions", headers, data)
+	raw, err := fetch.POST(r.BaseUrl+"/v1/predictions", headers, data, config.Instance.HttpTimeout, config.Instance.HttpProxyUrl)
 	if err != nil {
 		return res, err
 	}
@@ -65,7 +66,7 @@ func (r *Replicate) Generate(param ImageGenerateRequest) (res string, err error)
 	for {
 		// sleep 1000s
 		time.Sleep(1 * time.Second)
-		rawGet, err := fetch.GET(r.BaseUrl+"/v1/predictions/"+resp.ID, headers)
+		rawGet, err := fetch.GET(r.BaseUrl+"/v1/predictions/"+resp.ID, headers, config.Instance.HttpTimeout, config.Instance.HttpProxyUrl)
 		if err != nil {
 			return res, err
 		}
